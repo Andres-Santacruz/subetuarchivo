@@ -1,5 +1,6 @@
 import "dotenv/config";
 import nodemailer from "nodemailer";
+import { EMAIL_PASSWORD, EMAIL_USER } from "./getVariables";
 
 export const transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com", // hostname
@@ -9,8 +10,8 @@ export const transporter = nodemailer.createTransport({
     ciphers: "SSLv3",
   },
   auth: {
-    user: "andres_v10@live.com",
-    pass: "asanta-principal",
+    user:  EMAIL_USER,
+    pass: EMAIL_PASSWORD,
   },
 });
 

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
+import { MONGO_URI } from './getVariables';
 
 export const dbConnect = async ()=>{
-  const MONGO_URI = process.env.MONGO_DB || '';
   try {
     await mongoose.connect(MONGO_URI);
   } catch (error) {

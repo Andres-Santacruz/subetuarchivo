@@ -7,6 +7,7 @@ const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
+const TOKEN_SECRET = process.env.TOKEN_SECRET || "secret";
 
 export {
   PORT,
@@ -16,4 +17,5 @@ export {
   MONGO_URI,
   EMAIL_USER,
   EMAIL_PASSWORD,
+  TOKEN_SECRET,
 };

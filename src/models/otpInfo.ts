@@ -23,4 +23,4 @@ const otpInfoSchema = new Schema(
   }
 );
 
-export const otpInfoModel = model("otpInfo", otpInfoSchema);
+export const OtpInfoModel = model("otpInfo", otpInfoSchema);

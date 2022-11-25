@@ -10,4 +10,4 @@ const emailUsedSchema = new Schema({
   versionKey: false
 });
 
-export const emailUsedModel =  model('emailUsedModel', emailUsedSchema);
+export const EmailUsedModel =  model('emailUsedModel', emailUsedSchema);

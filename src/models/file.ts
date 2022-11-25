@@ -82,4 +82,4 @@ fileSchema.pre('save', async function (next){
 
 });
 
-export const fileModel = model("file", fileSchema);
+export const FileModel = model("file", fileSchema);

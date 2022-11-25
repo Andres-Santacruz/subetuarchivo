@@ -1,6 +1,6 @@
 import { Router, Response, Request } from "express";
 import { isExpired, isValidCode } from "../helpers";
-import { fileModel } from "../models/file";
+import { FileModel } from "../models/file";
 
 type TBody = {
   code: string;
@@ -32,7 +32,7 @@ router.post("/searchFile", async (req: Request<{}, {}, TBody>, res: Response<Typ
       files: null,
     });
 
-  const resFile = await fileModel.findOne({
+  const resFile = await FileModel.findOne({
     code,
   });
 

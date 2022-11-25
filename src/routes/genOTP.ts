@@ -1,6 +1,6 @@
 import { Request, Router } from "express";
 import { isValidateEmail } from "../helpers";
-import { otpInfoModel } from "../models/otpInfo";
+import { OtpInfoModel } from "../models/otpInfo";
 import { sendEmail } from "../services/sendEmailService";
 
 type TBody = {
@@ -19,13 +19,13 @@ router.post("/genotp", async (req: Request<{}, {}, TBody>, res) => {
     });
   }
 
-  const emailExist = await otpInfoModel.findOne({
+  const emailExist = await OtpInfoModel.findOne({
     email,
   });
 
   if (emailExist) {
     try {
-      await otpInfoModel.findOneAndUpdate(
+      await OtpInfoModel.findOneAndUpdate(
         {
           email,
         },
@@ -45,7 +45,7 @@ router.post("/genotp", async (req: Request<{}, {}, TBody>, res) => {
     }
   }
 
-  const infoModel = new otpInfoModel({
+  const infoModel = new OtpInfoModel({
     email,
     otp,
   });

@@ -28,10 +28,7 @@ app.use("/api", searchFileRoute);
 app.use(
   "/api",
   fileUpload({
-    useTempFiles: true,
-    safeFileNames: true,
-    tempFileDir: "./temp",
-    preserveExtension: true,
+    createParentPath: true
   }),
   uploadFilesRoute
 );

@@ -27,3 +27,14 @@ export const isExpired = (dateExp: Date): boolean => {
 
   return now > last;
 };
+
+export const codeGenerator = (): string =>{
+  const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+  const l1 = alphabet[Math.floor(Math.random() * alphabet.length)];
+  const l2 = alphabet[Math.floor(Math.random() * alphabet.length)];
+
+  const numbers = `${Math.floor(1000 + Math.random() * 9000)}`;
+
+  return `${l1}${l2}${numbers}`
+}

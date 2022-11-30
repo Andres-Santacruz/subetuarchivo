@@ -11,13 +11,15 @@ export const verifyToken = (
   _res: Response,
   next: NextFunction
 ) => {
-  const token = req.header("auth-token");
+  const token = req.headers.authorization?.slice(7);
+  console.log("authorization", token);
   if (!token) {
     req.user = null;
     return next();
   }
   try {
     const verified = jwt.verify(token, TOKEN_SECRET);
+    console.log("verified", verified);
     req.user = verified;
     next(); // continuamos
   } catch (error) {
@@ -25,4 +27,3 @@ export const verifyToken = (
     return next();
   }
 };
-

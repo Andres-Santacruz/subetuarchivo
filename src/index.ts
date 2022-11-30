@@ -3,9 +3,12 @@ import cors from 'cors';
 import fileUpload from 'express-fileupload';
 
 import { dbConnect } from "./config/db";
+import loginRoute from "./routes/loginUser";
+import registerRoute from "./routes/registerUser";
 import genOtpRoute from "./routes/genOTP";
 import searchFileRoute from "./routes/serachFile";
 import uploadFilesRoute from "./routes/uploadFiles";
+import getFileRoute from "./routes/getFile";
 import { PORT } from "./config/getVariables";
 
 const app = express();
@@ -19,11 +22,10 @@ app.use(express.json());
   tempFileDir: './temp'
 })); */
 
-app.get("/", (_req, res) => {
-  res.send("hello work");
-});
-
+app.use("/api", loginRoute);
+app.use("/api", registerRoute);
 app.use("/api", genOtpRoute);
+app.use("/api", getFileRoute);
 app.use("/api", searchFileRoute);
 app.use(
   "/api",

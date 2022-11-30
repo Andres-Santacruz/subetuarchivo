@@ -50,6 +50,10 @@ const fileSchema = new Schema(
       type: Date,
       default: new Date(Date.now() + 1000 * 60 * 60 * 24),
     },
+    public_id: {
+      type: [String],
+      require: true
+    }
   },
   {
     timestamps: true,

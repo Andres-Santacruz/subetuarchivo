@@ -10,12 +10,12 @@ export const sendEmail =  async (email: string, code: string): Promise<void> => 
 
   try {
     await transporter.sendMail({
-      from: '"CODIGO de verificación" <andres_v10@live.com>',
+      from: '"CODIGO de verificación" <subetuarchivo@hotmail.com>',
       to: email,
       subject: "Código de verificación para subier archivos",
       html: `
         <h1>Código de verificación </h1>
-        <p>Utiliza este código " <b>${code}</b> " para continuar subiendo tu archivo</p>
+        <p>Utiliza este código " <b><h2>${code}</h2></b> " para continuar subiendo tu archivo</p>
       `,
     });
   } catch (error: any) {

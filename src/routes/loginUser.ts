@@ -1,14 +1,19 @@
 import { compareSync } from "bcryptjs";
 import { Router, Response, Request } from "express";
-import jwt from "jsonwebtoken";
-import { TOKEN_SECRET } from "../config/getVariables";
+import { signToken } from "../helpers/signToken";
 
 import { validateLogin } from "../helpers/validatesUser";
 import { UserModel } from "../models/user";
 
+interface IUser {
+  token: string;
+  name: string;
+  email: string;
+}
+
 interface IResLogin {
   message: string;
-  token: string | null;
+  user: IUser | null;
   success: boolean;
 }
 
@@ -25,7 +30,7 @@ router.post("/login", async (req:Request<{}, {}, TBodyLogin>, res: Response<IRes
   if (error) {
     return res
       .status(400)
-      .json({ message: error.details[0].message, token: null, success: false });
+      .json({ message: error.details[0].message, user: null, success: false });
   }
 
   const {email, password} = req.body
@@ -36,7 +41,7 @@ router.post("/login", async (req:Request<{}, {}, TBodyLogin>, res: Response<IRes
     return res.status(400).json({
       message: "contraseña/correo no válido",
       success: false,
-      token: null,
+      user: null,
     });
   }
 
@@ -46,21 +51,25 @@ router.post("/login", async (req:Request<{}, {}, TBodyLogin>, res: Response<IRes
     return res.status(400).json({
       message: "contraseña/correo no válido",
       success: false,
-      token: null,
+      user: null,
     });
   }
-  const token = jwt.sign(
-    {
-      name: user.name,
-      id: user._id,
-      email
-    },
-    TOKEN_SECRET
-  );
+
+  const token = signToken({
+    name: user.name,
+    id: user._id,
+    email: email as string,
+  });
 
   return res.status(200).json({
     message: "loged successfuly",
-    token,
-    success: true
-  })
+    user: {
+      token,
+      email: email as string,
+      name: user.name,
+    },
+    success: true,
+  });
 });
+
+export default router;

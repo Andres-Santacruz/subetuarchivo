@@ -53,14 +53,13 @@ router.post(
     if (!user) {
       if (!isValidateEmail(email)) {
         return res
-          .status(400)
           .json({ success: false, message: "Email invalid", info: null });
       }
 
       const { isValid, message } = await verifyOtp(otpVerify, email);
 
       if (!isValid) {
-        return res.status(400).json({
+        return res.json({
           info: null,
           message,
           success: false,
@@ -71,7 +70,7 @@ router.post(
     }
     const urls = await uploadFiles(files);
     if (urls.length === 0)
-      return res.json({
+      return res.status(500).json({
         success: false,
         message: "Files cannot save",
         info: null,
@@ -82,10 +81,11 @@ router.post(
     const file = new FileModel({
       expiration: time ? new Date(Date.now() + time) : undefined,
       protected: password ? true : false,
-      urls,
+      urls: urls.map(el=>el.url),
       code,
       email: emailToUse,
       password,
+      public_id: urls.map(el=>el.public_id)
     });
 
     try {

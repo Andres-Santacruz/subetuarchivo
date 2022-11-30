@@ -1,23 +1,18 @@
 import { Router, Response } from "express";
 import { UserModel } from "../models/user";
-// import jwt from 'jsonwebtoken'
 import { hashSync, genSaltSync } from "bcryptjs";
 import { validateRegister } from "../helpers/validatesUser";
-import { Document } from "mongoose";
+import { signToken } from "../helpers/signToken";
+
+interface IUser {
+  token: string;
+  name: string;
+  email: string;
+}
 
 interface IResRegister {
   message: string;
-  user: Document<
-    unknown,
-    any,
-    {
-      email: string;
-      name: string;
-      password: string;
-      date: Date;
-      emailVerify: boolean;
-    }
-  > | null;
+  user: IUser | null;
   success: boolean;
 }
 
@@ -51,10 +46,21 @@ router.post("/register", async (req, res: Response<IResRegister>) => {
   });
   try {
     const savedUser = await user.save();
+
+    const token = signToken({
+      email: savedUser.email,
+      id: savedUser._id,
+      name: savedUser.name,
+    });
+
     return res.json({
-      success: true,
       message: "user saved successfuly",
-      user: savedUser,
+      user: {
+        token,
+        email: savedUser.email,
+        name: user.name,
+      },
+      success: true,
     });
   } catch (error: any) {
     return res

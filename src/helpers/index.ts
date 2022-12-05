@@ -1,3 +1,5 @@
+import fileUpload, { UploadedFile } from "express-fileupload";
+
 export const isValidateEmail = (email: string | undefined) => {
   if (!email) return false;
   const match = email
@@ -37,4 +39,42 @@ export const codeGenerator = (): string =>{
   const numbers = `${Math.floor(1000 + Math.random() * 9000)}`;
 
   return `${l1}${l2}${numbers}`
+}
+
+interface IResIsValidSize {
+  isValidSize: boolean;
+  messageValidSize: string;
+};
+
+export const isValidSizes = (files: fileUpload.FileArray, isAuth: boolean): IResIsValidSize => {
+
+  let totalSize = 0;
+  const keyArray = Object.keys(files);
+
+  keyArray.forEach(key=>{
+    totalSize += (files[key] as UploadedFile).size;
+  });
+
+  const size = totalSize/1024;
+
+  console.log('sizes --->', size)
+
+  if(size>5000 && !isAuth){
+    return {
+      isValidSize: false,
+      messageValidSize: `sizes is no allowed, sign in to upload file o files sizes less than 5M`,
+    };
+  }
+  if(size>10000){
+    return {
+      isValidSize: false,
+      messageValidSize: `sizes is no allowed, ${size} > 10M`
+    }
+  }
+
+  return {
+    isValidSize: true,
+    messageValidSize: ""
+  }
+
 }

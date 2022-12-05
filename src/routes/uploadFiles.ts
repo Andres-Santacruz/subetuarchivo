@@ -1,8 +1,9 @@
 import { Router, Response, Request } from "express";
 import type {} from "express-fileupload";
 import { verifyToken } from "../middlewares/authMiddleware";
-import { uploadFiles } from "../services/uploadFilesServices";
 import jwt from "jsonwebtoken";
+import { isValidSizes } from "../helpers";
+import { uploadFiles } from "../services/uploadFilesServices";
 import { isValidateEmail } from "../helpers";
 import { verifyOtp } from "../services/verifyOtpService";
 import { FileModel } from "../models/file";
@@ -41,15 +42,27 @@ router.post(
   verifyToken,
   async (req: Ireq, res: Response<IUploadRes>) => {
     const { files, user } = req;
-    if (!files)
-      return res.status(400).json({
+    if (!files){
+      return res.json({
         info: null,
         message: "File is required",
         success: false,
-      });
-    // console.log('files', files);
+      });}
     const { email, otpVerify, password, time } = req.body as IBody;
     let emailToUse = email;
+    
+    console.log('files', files)
+
+    const {isValidSize, messageValidSize} = isValidSizes(files, Boolean(user));
+
+    if(!isValidSize){
+      return res.json({
+        info: "",
+        message: messageValidSize,
+        success: false
+      })
+    }
+
     if (!user) {
       if (!isValidateEmail(email)) {
         return res

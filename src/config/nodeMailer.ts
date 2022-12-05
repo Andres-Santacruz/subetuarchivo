@@ -3,14 +3,14 @@ import nodemailer from "nodemailer";
 import { EMAIL_PASSWORD, EMAIL_USER } from "./getVariables";
 
 export const transporter = nodemailer.createTransport({
-  host: "smtp-mail.outlook.com", // hostname
+  host: "email-smtp.us-east-1.amazonaws.com", // hostname
   secure: false, // TLS requires secureConnection to be false
   port: 587, // port for secure SMTP
-  tls: {
+  /* tls: {
     ciphers: "SSLv3",
-  },
+  }, */
   auth: {
-    user:  EMAIL_USER,
+    user: EMAIL_USER,
     pass: EMAIL_PASSWORD,
   },
 });

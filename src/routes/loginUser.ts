@@ -29,7 +29,6 @@ router.post("/login", async (req:Request<{}, {}, TBodyLogin>, res: Response<IRes
 
   if (error) {
     return res
-      .status(400)
       .json({ message: error.details[0].message, user: null, success: false });
   }
 
@@ -38,7 +37,7 @@ router.post("/login", async (req:Request<{}, {}, TBodyLogin>, res: Response<IRes
   const user = await UserModel.findOne({ email });
 
   if (!user) {
-    return res.status(400).json({
+    return res.json({
       message: "contraseña/correo no válido",
       success: false,
       user: null,
@@ -48,7 +47,7 @@ router.post("/login", async (req:Request<{}, {}, TBodyLogin>, res: Response<IRes
   const validPassword = compareSync((password as string), user.password);
 
   if (!validPassword) {
-    return res.status(400).json({
+    return res.json({
       message: "contraseña/correo no válido",
       success: false,
       user: null,

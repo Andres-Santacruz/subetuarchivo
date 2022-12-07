@@ -24,14 +24,12 @@ router.post("/register", async (req, res: Response<IResRegister>) => {
 
   if (error) {
     return res
-      .status(400)
       .json({ message: error.details[0].message, user: null, success: false });
   }
 
   const isEmailExist = await UserModel.findOne({ email: req.body.email });
   if (isEmailExist) {
     return res
-      .status(400)
       .json({ message: "Email ya registrado", user: null, success: false });
   }
 
@@ -41,6 +39,7 @@ router.post("/register", async (req, res: Response<IResRegister>) => {
 
   const user = new UserModel({
     name: req.body.name,
+    surname: req.body.surname,
     email: req.body.email,
     password: password,
   });
@@ -50,7 +49,7 @@ router.post("/register", async (req, res: Response<IResRegister>) => {
     const token = signToken({
       email: savedUser.email,
       id: savedUser._id,
-      name: savedUser.name,
+      name: savedUser.name + savedUser.surname,
     });
 
     return res.json({
@@ -58,13 +57,12 @@ router.post("/register", async (req, res: Response<IResRegister>) => {
       user: {
         token,
         email: savedUser.email,
-        name: user.name,
+        name: user.name + user.surname,
       },
       success: true,
     });
   } catch (error: any) {
     return res
-      .status(400)
       .json({ message: error.message, success: false, user: null });
   }
 });

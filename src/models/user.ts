@@ -4,14 +4,22 @@ const userSchema = new Schema({
   name: {
     type: String,
     required: true,
-    min: 6,
-    max: 255,
+    minlength: 6,
+    maxlength: 255,
+  },
+  surname: {
+    type: String,
+    required: true,
+    minlength: 6,
+    maxlength: 255,
   },
   email: {
     type: String,
     required: true,
-    min: 6,
-    max: 1024,
+    minlength: 6,
+    maxlength: 1024,
+    lowercase: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -24,8 +32,12 @@ const userSchema = new Schema({
   },
   emailVerify: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
+  isPremium: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 userSchema.methods.toJSON = function () {

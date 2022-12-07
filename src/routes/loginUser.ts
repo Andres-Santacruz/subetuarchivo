@@ -65,7 +65,7 @@ router.post("/login", async (req:Request<{}, {}, TBodyLogin>, res: Response<IRes
     user: {
       token,
       email: email as string,
-      name: user.name,
+      name: user.name + user.surname,
     },
     success: true,
   });

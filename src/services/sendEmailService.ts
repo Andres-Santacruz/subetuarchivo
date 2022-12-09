@@ -1,8 +1,9 @@
 // import { getTokenAndTransport } from "../config/nodeMailer";
 
 import { transporter } from "../config/nodeMailer";
+import { htmlResetPassword } from "../helpers";
 
-export const sendEmail = async (email: string, code: string): Promise<void> => {
+export const sendEmailOtp = async (email: string, code: string): Promise<void> => {
   /* const transporter  = await getTokenAndTransport();
   if(!transporter) throw new Error('no se pudo enviar email');
   console.log('lleque aqui'); */
@@ -31,6 +32,24 @@ export const sendEmail = async (email: string, code: string): Promise<void> => {
   </div>
 </div>
       `,
+    });
+  } catch (error: any) {
+    console.log("error: ", error.message);
+    throw new Error(error.message);
+  }
+};
+
+export const sendEmailResetPass = async (email: string, url: string, name: string): Promise<void> => {
+  /* const transporter  = await getTokenAndTransport();
+  if(!transporter) throw new Error('no se pudo enviar email');
+  console.log('lleque aqui'); */
+
+  try {
+    await transporter.sendMail({
+      from: '"RESTABLECER CONTRASEÑA" <not-reply@subetuarchivo.com>',
+      to: email,
+      subject: "Link para restablecer tu contraseña",
+      html: htmlResetPassword(url, name),
     });
   } catch (error: any) {
     console.log("error: ", error.message);

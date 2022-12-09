@@ -1,7 +1,7 @@
 import { Request, Router, Response } from "express";
 import { isValidateEmail } from "../helpers";
 import { OtpInfoModel } from "../models/otpInfo";
-import { sendEmail } from "../services/sendEmailService";
+import { sendEmailOtp } from "../services/sendEmailService";
 
 type TBody = {
   email: string;
@@ -43,7 +43,7 @@ router.post(
             expiration: Date.now() + 60 * 5 * 1000,
           }
         );
-        await sendEmail(email, otp);
+        await sendEmailOtp(email, otp);
         return res.status(202).json({
           success: true,
           message: "OTP generated, update and send to email " + email,
@@ -61,7 +61,7 @@ router.post(
     try {
       const infoRes = await infoModel.save();
       console.log("infoRes", infoRes);
-      await sendEmail(email, otp);
+      await sendEmailOtp(email, otp);
       return res.status(201).json({
         success: true,
         message: "OTP generated and send: " + email,

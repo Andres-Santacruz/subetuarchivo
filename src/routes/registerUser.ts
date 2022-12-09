@@ -49,7 +49,7 @@ router.post("/register", async (req, res: Response<IResRegister>) => {
     const token = signToken({
       email: savedUser.email,
       id: savedUser._id,
-      name: savedUser.name + savedUser.surname,
+      name: `${savedUser.name} ${savedUser.surname}`,
     });
 
     return res.json({
@@ -57,7 +57,7 @@ router.post("/register", async (req, res: Response<IResRegister>) => {
       user: {
         token,
         email: savedUser.email,
-        name: user.name + user.surname,
+        name: `${user.name} ${user.surname}`,
       },
       success: true,
     });

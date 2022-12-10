@@ -92,7 +92,7 @@ router.post(
     const code = await validateCode();
 
     const file = new FileModel({
-      expiration: time ? new Date(Date.now() + time) : undefined,
+      expiration: time ? new Date(Date.now() + Number(time)) : undefined,
       protected: password ? true : false,
       urls: urls.map(el=>el.url),
       code,
@@ -106,7 +106,6 @@ router.post(
       return res.json({ info: code, message: "Files upload successfuly", success: true });
     } catch (error: any) {
       return res
-        .status(500)
         .json({ info: null, message: error.message, success: false });
     }
   }

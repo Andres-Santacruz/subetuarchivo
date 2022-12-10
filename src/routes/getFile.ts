@@ -20,13 +20,11 @@ router.post(
 
     if (!code) {
       return res
-        .status(400)
         .json({ message: "code is required", success: false, urls: null });
     }
 
     if (!isValidCode(code)) {
       return res
-        .status(400)
         .json({ message: "code is not valid", success: false, urls: null });
     }
 
@@ -58,7 +56,7 @@ router.post(
 
       if (!isValid) {
         return res.json({
-          message: "File protected, required password",
+          message: "Password invalid",
           success: false,
           urls: null,
         });

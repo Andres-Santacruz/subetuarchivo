@@ -47,7 +47,7 @@ router.post(
 
     if (infoCode.protected) {
       if (!password) {
-        return res.status(401).json({
+        return res.json({
           message: "File protected, required password",
           success: false,
           urls: null,
@@ -57,7 +57,7 @@ router.post(
       const isValid = infoCode.comparePassword(password);
 
       if (!isValid) {
-        return res.status(401).json({
+        return res.json({
           message: "File protected, required password",
           success: false,
           urls: null,

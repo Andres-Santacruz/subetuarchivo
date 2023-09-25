@@ -2,17 +2,18 @@ import { Router, Response, Request } from "express";
 import { isValidateEmail } from "../helpers";
 import { UserModel } from "../models/user";
 import { generateUrlService } from "../services/generateUrlService";
-import { sendEmailResetPass } from "../services/sendEmailService";
+import { sendEmailResetPass } from "../services/resendSendEmails";
+// import { sendEmailResetPass } from "../services/sendEmailService";
 
 interface TBodyForgot {
   email: string | undefined | null;
 }
 interface IResFrogot {
   message: string;
-  url: string | null; 
+  url: string | null;
   success: boolean;
 }
-type IReqForgot = Request<{}, {}, TBodyForgot>
+type IReqForgot = Request<{}, {}, TBodyForgot>;
 
 type IResForgot = Response<IResFrogot>;
 
@@ -48,18 +49,21 @@ genLinkPasswordRoute.post(
       });
     }
 
-    const {url, success, message: msg } = await generateUrlService(user._id);
+    const { url, success, message: msg } = await generateUrlService(user._id);
 
-    if(!success || !url) {
+    if (!success || !url) {
       return res.json({
         message: msg,
         success: false,
-        url: null
-      })
+        url: null,
+      });
     }
 
     try {
-      await sendEmailResetPass(user.email, url, user.name);
+      const emailInfo = await sendEmailResetPass(user.email, url, user.name);
+      if (!emailInfo.id) {
+        throw new Error("No se pudo enviar email, RESEND");
+      }
       return res.json({
         message: `Link send to ${email}`,
         success: true,
